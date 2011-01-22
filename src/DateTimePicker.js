@@ -41,7 +41,7 @@ Ext.namespace('Ext.ux');
             if (!this.timeMenu) {
                 var menuConfig = this.initialConfig.timeMenu;
 
-                if (menuConfig && menuConfig.xtype != null) {
+                if (menuConfig && menuConfig.xtype) {
                     this.timeMenu = Ext.create(menuConfig);
                 } else {
                     var picker = Ext.create(
@@ -50,7 +50,11 @@ Ext.namespace('Ext.ux');
                             }),
                             'basetimepicker'
                             );
-                    this.timeMenu = new DefaultTimeMenu(picker, menuConfig || {});
+                    this.timeMenu = new Menu(picker, menuConfig || {});
+                }
+
+                if (!Ext.isFunction(this.timeMenu.getPicker)) {
+                    throw 'Your time menu must provide the getPicker() method';
                 }
 
                 this.timeMenu.on('timeselect', this.onTimeSelect, this);
@@ -59,6 +63,8 @@ Ext.namespace('Ext.ux');
 
         _initDatePicker: function () {
             var config = this.initialConfig.datePicker || {};
+
+            config.internalRender = this.initialConfig.internalRender;
 
             var picker = this.datePicker = Ext.create(config, 'datepicker');
 
@@ -211,7 +217,6 @@ Ext.namespace('Ext.ux');
 
         setValue: function (value) {
             this._updateTimeValue(value);
-
             this.datePicker.setValue(value.clone());
         },
 
@@ -229,8 +234,9 @@ Ext.namespace('Ext.ux');
 
         _showTimePicker: function () {
             this._initTimePicker();
+            this.timeMenu.getPicker().setValue(this.timeValue, false);
 
-            this.timeMenu.show(this.timePickerButton.el);
+            this.timeMenu.show(this.timePickerButton.el, null, this.parentMenu);
         },
 
         onDone: function () {
@@ -256,6 +262,8 @@ Ext.namespace('Ext.ux');
             Ext.destroy(this.doneBtn);
             this.doneBtn = null;
 
+            this.parentMenu = null;
+
             UX.DateTimePicker.superclass.destroy.call(this);
         }
 
@@ -265,7 +273,7 @@ Ext.namespace('Ext.ux');
 
     //
 
-    var DefaultTimeMenu = UX.DateTimePicker.Menu = Ext.extend(Ext.menu.Menu, {
+    var Menu = UX.DateTimePicker.Menu = Ext.extend(Ext.menu.Menu, {
 
         enableScrolling : false,
 
@@ -284,13 +292,17 @@ Ext.namespace('Ext.ux');
 
             this.picker = Ext.create(picker);
 
-            DefaultTimeMenu.superclass.constructor.call(this, Ext.applyIf({
+            Menu.superclass.constructor.call(this, Ext.applyIf({
                 items: this.picker
             }, config));
 
             this.addEvents('timeselect');
 
             this.picker.on('select', this.onTimeSelect, this);
+        },
+
+        getPicker: function () {
+            return this.picker;
         },
 
         onTimeSelect: function (picker, value) {
@@ -303,7 +315,7 @@ Ext.namespace('Ext.ux');
 
             this.picker = null;
 
-            DefaultTimeMenu.superclass.destroy.call(this);
+            Menu.superclass.destroy.call(this);
         }
 
     });

@@ -6,24 +6,35 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
     <!-- ExtJS -->
-    <link type="text/css" rel="stylesheet" href="../ext-3.2.1/resources/css/ext-all.css"/>
-    <script type="text/javascript" src="../ext-3.2.1/ext-base-debug.js"></script>
-    <script type="text/javascript" src="../ext-3.2.1/ext-all-debug.js"></script>
+    <link type="text/css" rel="stylesheet" href="../ext-3.3.1/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../ext-3.3.1/ext-base-debug.js"></script>
+    <script type="text/javascript" src="../ext-3.3.1/ext-all-debug.js"></script>
     <!-- /ExtJS -->
 
-    <link type="text/css" rel="stylesheet" href="ux-date-time-picker.css"/>
-    <link type="text/css" rel="stylesheet" href="ux-base-time-picker.css"/>
+    <link type="text/css" rel="stylesheet" href="src/ux-date-time-picker.css"/>
+    <link type="text/css" rel="stylesheet" href="src/ux-base-time-picker.css"/>
 
-    <script type="text/javascript" src="DateTimePicker.js"></script>
-    <script type="text/javascript" src="BaseTimePicker.js"></script>
+    <script type="text/javascript" src="src/DateTimePicker.js"></script>
+    <script type="text/javascript" src="src/BaseTimePicker.js"></script>
+    <script type="text/javascript" src="src/DateTimeField.js"></script>
 
     <script type="text/javascript">
         /*<![CDATA[*/
 
         Ext.onReady(function () {
 
-            var picker = new Ext.ux.DateTimePicker({
-                // ...
+            var dateField = new Ext.ux.DateTimeField({
+                fieldLabel: 'Date & time'
+            });
+
+            var form = new Ext.form.FormPanel({
+                bodyStyle: {
+                    padding: '10px'
+                },
+                items: [
+                    dateField,
+                    new Ext.form.DateField({})
+                ]
             });
 
             new Ext.Panel({
@@ -35,29 +46,19 @@
                     padding: '10px'
                 },
                 layout: 'column',
-                items: [
-                    /*new Ext.form.FormPanel({
-                     bodyStyle: {
-                     padding: '10px'
-                     },
-                     items: [
-                     ]
-                     })*/
-                    picker
-                ],
+                items: [form],
                 buttons: [
                     {
                         text: 'Set current time',
-                        handler: function () {
-                            picker.setValue(new Date());
-                        }.createDelegate(this, [picker], 0)
+                        handler: function (df) {
+                            df.setValue(new Date());
+                        }.createDelegate(this, [dateField], 0)
                     },
                     {
                         text: 'Destroy form',
-                        handler: function () {
-                            //var form = this.ownerCt.ownerCt.items.first();
-                            //Ext.destroy(form);
-                        }
+                        handler: function (f) {
+                            Ext.destroy(f);
+                        }.createDelegate(this, [form], 0)
                     }
                 ]
             });

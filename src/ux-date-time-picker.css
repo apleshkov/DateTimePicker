@@ -3,6 +3,14 @@
     overflow: hidden;
 }
 
+.x-menu .ux-date-time-picker {
+    border-color: #A3BAD9;
+}
+
+.x-menu-plain .ux-date-time-picker {
+    border: none;
+}
+
 .ux-date-time-picker-inner {
     position: relative;
 }
@@ -27,4 +35,19 @@
 .ux-date-time-picker-value-ct-value {
     font-weight: bold;
     cursor: pointer;
+}
+
+/* menu */
+
+.ext-ie .x-date-time-menu {
+    height: 229px !important;
+}
+
+.ext-strict .ext-ie .x-date-time-menu,
+.ext-border-box .ext-ie8 .x-date-time-menu {
+    height: 227px !important;
+}
+
+.ext-strict .ext-ie7 .x-date-time-menu {
+    height: 225px !important;
 }

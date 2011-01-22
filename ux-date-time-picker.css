@@ -1,0 +1,30 @@
+.ux-date-time-picker {
+    border: 1px solid #1B376C;
+    overflow: hidden;
+}
+
+.ux-date-time-picker-inner {
+    position: relative;
+}
+
+.ux-date-time-picker .x-date-picker {
+    border: none !important;
+}
+
+.ux-date-time-picker-value-ct {
+    border: none;
+}
+
+.ux-date-time-picker-value-ct-value-wrap {
+    white-space: nowrap;
+    font: 12px arial, tahoma, verdana, helvetica;
+}
+
+.ux-date-time-picker-value-ct-value-label {
+    font-weight: normal;
+}
+
+.ux-date-time-picker-value-ct-value {
+    font-weight: bold;
+    cursor: pointer;
+}

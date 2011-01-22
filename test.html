@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>DateTimeField</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <!-- ExtJS -->
+    <link type="text/css" rel="stylesheet" href="../ext-3.2.1/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../ext-3.2.1/ext-base-debug.js"></script>
+    <script type="text/javascript" src="../ext-3.2.1/ext-all-debug.js"></script>
+    <!-- /ExtJS -->
+
+    <link type="text/css" rel="stylesheet" href="ux-date-time-picker.css"/>
+    <link type="text/css" rel="stylesheet" href="ux-base-time-picker.css"/>
+
+    <script type="text/javascript" src="DateTimePicker.js"></script>
+    <script type="text/javascript" src="BaseTimePicker.js"></script>
+
+    <script type="text/javascript">
+        /*<![CDATA[*/
+
+        Ext.onReady(function () {
+
+            new Ext.Panel({
+                title: 'Test',
+                renderTo: Ext.getBody(),
+                width: 800,
+                height: 400,
+                bodyStyle: {
+                    padding: '10px'
+                },
+                layout: 'column',
+                items: [
+                    /*new Ext.form.FormPanel({
+                     bodyStyle: {
+                     padding: '10px'
+                     },
+                     items: [
+                     ]
+                     })*/
+                    new Ext.ux.DateTimePicker({
+                        // ...
+                    })
+                ],
+                buttons: [
+                    {
+                        text: 'Set current time',
+                        handler: function () {
+                            var form = this.ownerCt.ownerCt.items.first();
+                            form.items.first().setValue(new Date());
+                        }
+                    },
+                    {
+                        text: 'Destroy form',
+                        handler: function () {
+                            var form = this.ownerCt.ownerCt.items.first();
+                            Ext.destroy(form);
+                        }
+                    }
+                ]
+            });
+
+        });
+
+        /*]]>*/
+    </script>
+</head>
+<body>
+</body>
+</html>

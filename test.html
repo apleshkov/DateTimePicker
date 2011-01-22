@@ -22,6 +22,10 @@
 
         Ext.onReady(function () {
 
+            var picker = new Ext.ux.DateTimePicker({
+                // ...
+            });
+
             new Ext.Panel({
                 title: 'Test',
                 renderTo: Ext.getBody(),
@@ -39,23 +43,20 @@
                      items: [
                      ]
                      })*/
-                    new Ext.ux.DateTimePicker({
-                        // ...
-                    })
+                    picker
                 ],
                 buttons: [
                     {
                         text: 'Set current time',
                         handler: function () {
-                            var form = this.ownerCt.ownerCt.items.first();
-                            form.items.first().setValue(new Date());
-                        }
+                            picker.setValue(new Date());
+                        }.createDelegate(this, [picker], 0)
                     },
                     {
                         text: 'Destroy form',
                         handler: function () {
-                            var form = this.ownerCt.ownerCt.items.first();
-                            Ext.destroy(form);
+                            //var form = this.ownerCt.ownerCt.items.first();
+                            //Ext.destroy(form);
                         }
                     }
                 ]

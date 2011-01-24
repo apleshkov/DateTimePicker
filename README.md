@@ -12,7 +12,7 @@ This component is like `Ext.DateField`, but uses `Ext.ux.DateTimePicker`.
 
 Supported ExtJS versions: 3.3.1
 
-Supported browsers: Firefox 3.6, Chrome 8, IE 7, IE 8
+Supported browsers: Firefox 3.6, Chrome 8, Opera 11, IE 7, IE 8
 
 INSTALLATION
 ------------

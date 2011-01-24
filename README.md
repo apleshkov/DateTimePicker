@@ -41,6 +41,33 @@ xtype: `datetimepicker`
         }
     });
 
+**How to use my own picker?**
+
+    var myPicker = Ext.extend(..., {
+
+        // my code
+
+    });
+
+    var picker = new Ext.ux.DateTimePicker({
+        // ...
+        timePicker: new myPicker(...)
+    });
+
+    // using xtype
+
+    Ext.reg('mytimepicker', myPicker);
+
+    var picker = new Ext.ux.DateTimePicker({
+        // ...
+        timePicker: {
+            xtype: 'mytimepicker'
+            // ...
+        }
+    });
+
+You can use the same technique for `timeMenu` too.
+
 **Field**
 
 xtype: `datetimefield`

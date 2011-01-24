@@ -1,5 +1,3 @@
-Ext.namespace('Ext.ux');
-
 (function () {
 
     var UX = Ext.ux;
@@ -119,6 +117,15 @@ Ext.namespace('Ext.ux');
             UX.BaseTimePicker.superclass.afterRender.call(this);
 
             this._updateTimeValue();
+        },
+
+        destroy: function () {
+            this.purgeListeners();
+
+            this.hourSlider = null;
+            this.minSlider = null;
+
+            UX.BaseTimePicker.superclass.destroy.call(this);
         }
 
     });

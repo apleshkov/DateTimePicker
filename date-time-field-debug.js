@@ -1,3 +1,140 @@
+Ext.namespace('Ext.ux.form');
+
+(function () {
+
+    var UX = Ext.ux;
+
+    UX.BaseTimePicker = Ext.extend(Ext.Panel, {
+
+        timeFormat: 'g:i A',
+
+        header: true,
+
+        nowText: 'Now',
+
+        doneText: 'Done',
+
+        hourIncremenet: 1,
+
+        minIncremenet: 1,
+
+        hoursLabel: 'Hours',
+
+        minsLabel: 'Minutes',
+
+        cls: 'ux-base-time-picker',
+
+        width: 210,
+
+        layout: 'form',
+
+        labelAlign: 'top',
+
+        initComponent: function () {
+            this.addEvents('select');
+
+            this.hourSlider = new Ext.slider.SingleSlider({
+                increment: this.hourIncremenet,
+                minValue: 0,
+                maxValue: 23,
+                fieldLabel: this.hoursLabel,
+                listeners: {
+                    change: this._updateTimeValue,
+                    scope: this
+                },
+                plugins: new Ext.slider.Tip()
+            });
+
+            this.minSlider = new Ext.slider.SingleSlider({
+                increment: this.minIncremenet,
+                minValue: 0,
+                maxValue: 59,
+                fieldLabel: this.minsLabel,
+                listeners: {
+                    change: this._updateTimeValue,
+                    scope: this
+                },
+                plugins: new Ext.slider.Tip()
+            });
+
+            this.setCurrentTime(false);
+
+            this.items = [
+                    this.hourSlider,
+                    this.minSlider
+            ];
+
+            this.bbar = [
+                {
+                    text: this.nowText,
+                    handler: this.setCurrentTime,
+                    scope: this
+                },
+                '->',
+                {
+                    text: this.doneText,
+                    handler: this.onDone,
+                    scope: this
+                }
+            ];
+
+            UX.BaseTimePicker.superclass.initComponent.call(this);
+        },
+
+        setCurrentTime: function (animate) {
+            this.setValue(new Date(), !!animate);
+        },
+
+        onDone: function () {
+            this.fireEvent('select', this, this.getValue());
+        },
+
+        setValue: function (value, animate) {
+            this.hourSlider.setValue(value.getHours(), animate);
+            this.minSlider.setValue(value.getMinutes(), animate);
+
+            this._updateTimeValue();
+        },
+
+        _extractValue: function () {
+            var v = new Date();
+            v.setHours(this.hourSlider.getValue());
+            v.setMinutes(this.minSlider.getValue());
+            return v;
+        },
+
+        getValue: function () {
+            return this._extractValue();
+        },
+
+        _updateTimeValue: function () {
+            var v = this._extractValue().format(this.timeFormat);
+
+            if (this.rendered) {
+                this.setTitle(v);
+            }
+        },
+
+        afterRender: function () {
+            UX.BaseTimePicker.superclass.afterRender.call(this);
+
+            this._updateTimeValue();
+        },
+
+        destroy: function () {
+            this.purgeListeners();
+
+            this.hourSlider = null;
+            this.minSlider = null;
+
+            UX.BaseTimePicker.superclass.destroy.call(this);
+        }
+
+    });
+
+    Ext.reg('basetimepicker', UX.BaseTimePicker);
+
+})();
 (function () {
 
     var UX = Ext.ux;
@@ -333,5 +470,133 @@
         }
 
     });
+
+})();(function () {
+
+    var F = Ext.ux.form;
+
+    var STRICT = Ext.isIE7 && Ext.isStrict;
+
+    var Menu = Ext.extend(Ext.menu.Menu, {
+
+        enableScrolling : false,
+
+        plain: true,
+
+        showSeparator: false,
+
+        hideOnClick : true,
+
+        pickerId : null,
+
+        cls : 'x-date-menu x-date-time-menu',
+
+        constructor: function (picker, config) {
+            Menu.superclass.constructor.call(this, Ext.applyIf({
+                items: picker
+            }, config || {}));
+
+            this.primaryPicker = picker;
+
+            picker.parentMenu = this;
+
+            this.on('beforeshow', this.onBeforeShow, this);
+
+            this.strict = STRICT;
+
+            if (this.strict) {
+                this.on('show', this.onShow, this, { single: true, delay: 20 });
+            }
+
+            // black magic
+            this.picker = picker.datePicker;
+
+            this.relayEvents(picker, ['select']);
+            this.on('show', picker.focus, picker);
+            this.on('select', this.menuHide, this);
+
+            if (this.handler) {
+                this.on('select', this.handler, this.scope || this);
+            }
+        },
+
+        menuHide : function () {
+            if (this.hideOnClick) {
+                this.hide(true);
+            }
+        },
+
+        onBeforeShow : function () {
+            if (this.picker) {
+                this.picker.hideMonthPicker(true);
+            }
+        },
+
+        onShow : function () {
+            var el = this.picker.getEl();
+            el.setWidth(el.getWidth()); // nasty hack for IE7 strict mode
+        },
+
+        destroy: function () {
+            this.primaryPicker = null;
+            this.picker = null;
+
+            Menu.superclass.destroy.call(this);
+        }
+
+    });
+
+    //
+
+    F.DateTimeField = Ext.extend(Ext.form.DateField, {
+
+        timeFormat: 'g:i A',
+
+        defaultAutoCreate : {
+            tag: 'input',
+            type: 'text',
+            size: '22',
+            autocomplete: 'off'
+        },
+
+        initComponent: function () {
+            F.DateTimeField.superclass.initComponent.call(this);
+
+            this.dateFormat = this.dateFormat || this.format;
+
+            var picker = this._createPicker();
+
+            this.format = this.dateFormat + ' ' + this.timeFormat;
+
+            this.menu = new Menu(picker, {
+                hideOnClick: false
+            });
+        },
+
+        _createPicker: function () {
+            var config = this.initialConfig.picker || {};
+
+            Ext.apply(config, {
+                ctCls: 'x-menu-date-item',
+                internalRender: STRICT || !Ext.isIE
+            });
+
+            Ext.applyIf(config, {
+                dateFormat: this.dateFormat,
+                timeFormat: this.timeFormat
+            });
+
+            return Ext.create(config, 'datetimepicker');
+        },
+
+        onTriggerClick: function () {
+            F.DateTimeField.superclass.onTriggerClick.apply(this, arguments);
+
+            this.menu.primaryPicker.setValue(this.getValue() || new Date());
+        }
+
+    });
+
+    Ext.reg('datetimefield', F.DateTimeField);
 
 })();

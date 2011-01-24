@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="DateTimeField" default="build" basedir=".">
+
+    <!-- Setup classpath for js-build-tools ant tasks -->
+	<path id="js-build-tasks.classpath">
+		<pathelement location="."/>
+
+		<fileset dir="tools/js-build-tools/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+
+		<fileset dir="tools/js-build-tools/tmp">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+    <!-- Register new js-build-tools ant tasks -->
+	<taskdef name="yuicompress" classname="com.moxiecode.ant.tasks.YuiCompressTask" classpathref="js-build-tasks.classpath" loaderref="js-build-tasks.classpath.loader" />
+
+    <target name="build">
+
+        <concat destfile="date-time-field-debug.js">
+            <fileset dir="src" includes="begin.js"/>
+            <fileset dir="src" includes="BaseTimePicker.js"/>
+            <fileset dir="src" includes="DateTimePicker.js"/>
+            <fileset dir="src" includes="DateTimeField.js"/>
+        </concat>
+
+        <concat destfile="ux-date-time-field.css">
+            <fileset dir="src" includes="*.css"/>
+        </concat>
+
+        <yuicompress infile="date-time-field-debug.js" outfile="date-time-field.js"/>
+
+    </target>
+
+</project>

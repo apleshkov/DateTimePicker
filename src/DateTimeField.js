@@ -1,5 +1,3 @@
-Ext.namespace('Ext.ux.form');
-
 (function () {
 
     var F = Ext.ux.form;
@@ -79,6 +77,8 @@ Ext.namespace('Ext.ux.form');
 
     F.DateTimeField = Ext.extend(Ext.form.DateField, {
 
+        timeFormat: 'g:i A',
+
         defaultAutoCreate : {
             tag: 'input',
             type: 'text',
@@ -89,11 +89,11 @@ Ext.namespace('Ext.ux.form');
         initComponent: function () {
             F.DateTimeField.superclass.initComponent.call(this);
 
-            this.timeFormat = this.timeFormat || Ext.form.TimeField.prototype.format;
+            this.dateFormat = this.dateFormat || this.format;
 
             var picker = this._createPicker();
 
-            this.format = this.format + ' ' + this.timeFormat;
+            this.format = this.dateFormat + ' ' + this.timeFormat;
 
             this.menu = new Menu(picker, {
                 hideOnClick: false
@@ -108,11 +108,8 @@ Ext.namespace('Ext.ux.form');
                 internalRender: STRICT || !Ext.isIE
             });
 
-            config.datePicker = Ext.applyIf(config.datePicker || {}, {
-                format: this.format
-            });
-
-            config.timePicker = Ext.applyIf(config.timePicker || {}, {
+            Ext.applyIf(config, {
+                dateFormat: this.dateFormat,
                 timeFormat: this.timeFormat
             });
 
@@ -126,5 +123,7 @@ Ext.namespace('Ext.ux.form');
         }
 
     });
+
+    Ext.reg('datetimefield', F.DateTimeField);
 
 })();

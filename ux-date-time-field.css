@@ -1,3 +1,9 @@
+.ux-base-time-picker {
+}
+
+.ux-base-time-picker .x-panel-body {
+    padding: 5px;
+}
 .ux-date-time-picker {
     border: 1px solid #1B376C;
     overflow: hidden;

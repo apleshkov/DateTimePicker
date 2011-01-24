@@ -11,30 +11,31 @@
     <script type="text/javascript" src="../ext-3.3.1/ext-all-debug.js"></script>
     <!-- /ExtJS -->
 
-    <link type="text/css" rel="stylesheet" href="src/ux-date-time-picker.css"/>
-    <link type="text/css" rel="stylesheet" href="src/ux-base-time-picker.css"/>
+    <link type="text/css" rel="stylesheet" href="ux-date-time-field.css"/>
 
-    <script type="text/javascript" src="src/DateTimePicker.js"></script>
-    <script type="text/javascript" src="src/BaseTimePicker.js"></script>
-    <script type="text/javascript" src="src/DateTimeField.js"></script>
+    <script type="text/javascript" src="date-time-field.js"></script>
 
     <script type="text/javascript">
         /*<![CDATA[*/
 
         Ext.onReady(function () {
 
-            var dateField = new Ext.ux.DateTimeField({
+            var dateField = new Ext.ux.form.DateTimeField({
+                dateFormat: 'j M Y',
+                //timeFormat: 'H:i',
                 fieldLabel: 'Date & time'
             });
 
             var form = new Ext.form.FormPanel({
+                title: 'My form',
                 bodyStyle: {
                     padding: '10px'
                 },
-                items: [
-                    dateField,
-                    new Ext.form.DateField({})
-                ]
+                items: [dateField]
+            });
+
+            var picker = new Ext.ux.DateTimePicker({
+                timeFormat: 'H:i'
             });
 
             new Ext.Panel({
@@ -45,8 +46,22 @@
                 bodyStyle: {
                     padding: '10px'
                 },
-                layout: 'column',
-                items: [form],
+                layout: 'absolute',
+                items: [
+                    {
+                        x: 10,
+                        y: 10,
+                        border: false,
+                        items: form,
+                        width: 500
+                    },
+                    {
+                        xtype: 'datetimepicker',
+                        x: 600,
+                        y: 10,
+                        timeFormat: 'H:i'
+                    }
+                ],
                 buttons: [
                     {
                         text: 'Set current time',

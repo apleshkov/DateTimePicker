@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TestBuild" default="build" basedir=".">
+	<!-- Setup classpath for js-build-tools ant tasks -->
+	<path id="js-build-tasks.classpath">
+		<pathelement location="."/>
+
+		<fileset dir="..\lib">
+			<include name="**/*.jar"/>
+		</fileset>
+
+		<fileset dir="..\tmp">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<!-- Register new js-build-tools ant tasks -->
+	<taskdef name="preprocess" classname="com.moxiecode.ant.tasks.PreProcessTask" classpathref="js-build-tasks.classpath" loaderref="js-build-tasks.classpath.loader" />
+	<taskdef name="yuicompress" classname="com.moxiecode.ant.tasks.YuiCompressTask" classpathref="js-build-tasks.classpath" loaderref="js-build-tasks.classpath.loader" />
+	<taskdef name="moxiedoc" classname="com.moxiecode.ant.tasks.MoxieDocTask" classpathref="tasks.classpath" loaderref="js-build-tasks.classpath.loader" />
+	<taskdef name="dtd2js" classname="com.moxiecode.ant.tasks.Dtd2JsTask" classpathref="tasks.classpath" loaderref="js-build-tasks.classpath.loader" />
+
+	<!-- Setup default build target -->
+	<target name="build">
+		<!-- Concat multuple JS files together -->
+		<concat destfile="example.combined.js">
+			<fileset dir="." includes="example1.js" />
+			<fileset dir="." includes="example2.js" />
+		</concat>
+
+		<!-- Process pre proccesing instuctions like #if/#endif etc -->
+		<preprocess infile="example.combined.js" outfile="example.preprocessed.js" defines="value1,value2" />
+
+		<!-- Compress the file using the YUI Compressor -->
+		<yuicompress infile="example.preprocessed.js" outfile="example.min.js" />
+
+		<!-- Process XHTML Strict DTD -->
+		<dtd2js infile="dtds/xhtml1-strict.dtd" outFile="dtds/xhtml1-strict.dtd.js" />
+		<dtd2js infile="dtds/xhtml1-strict.dtd" outFile="dtds/xhtml1-strict.dtd.compressed.js" propertiesFile="dtds/xhtml1-strict.dtd.properties" exclude="html,head,meta,title,link" />
+		<yuicompress infile="dtds/xhtml1-strict.dtd.compressed.js" outfile="dtds/xhtml1-strict.dtd.compressed.min.js" />
+
+		<!-- Process XHTML Transitional DTD -->
+		<dtd2js infile="dtds/xhtml1-transitional.dtd" outFile="dtds/xhtml1-transitional.dtd.js" />
+		<dtd2js infile="dtds/xhtml1-transitional.dtd" outFile="dtds/xhtml1-transitional.dtd.compressed.js" propertiesFile="dtds/xhtml1-transitional.dtd.properties" exclude="html,head,meta,title,link" />
+		<yuicompress infile="dtds/xhtml1-transitional.dtd.compressed.js" outfile="dtds/xhtml1-transitional.dtd.compressed.min.js" />
+
+		<!-- Process XHTML Transitional DTD only children -->
+		<dtd2js infile="dtds/xhtml1-transitional.dtd" outFile="dtds/xhtml1-transitional.dtd.children.js" attributes="false" />
+
+		<dtd2js
+			infile="dtds/xhtml1-transitional.dtd"
+			outFile="dtds/xhtml1-transitional.dtd.children.compressed.js"
+			propertiesFile="dtds/xhtml1-transitional.dtd.children.properties"
+			attributes="false"
+			exclude="html,head,meta,title,link"
+		/>
+
+		<yuicompress infile="dtds/xhtml1-transitional.dtd.children.compressed.js" outfile="dtds/xhtml1-transitional.dtd.children.compressed.min.js" />
+	</target>
+
+	<!-- Generate JS documentation -->
+	<target name="moxiedoc" depends="" description="Generates HTML documentation out of js source">
+		<moxiedoc outdir="docs" msintellisense="docs\model.js" eventclass="tinymce.util.Dispatcher" templatedir="..\templates" title="Example API">
+			<fileset dir=".">
+				<include name="**/example1.js" /> 
+			</fileset>
+		</moxiedoc>
+	</target>
+</project>

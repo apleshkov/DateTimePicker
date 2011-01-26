@@ -22,7 +22,7 @@ INSTALLATION
 3. Include `date-time-field.js` and `ux-date-time-field.css` in your project
 
 USAGE
-------------
+-----
 
 **Picker**
 
@@ -79,3 +79,8 @@ xtype: `datetimefield`
             // picker conf (see above example)
         }
     });
+
+LICENSE
+-------
+
+This project is distributed under the MIT license. Please keep the exisisting headers.

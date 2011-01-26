@@ -1,3 +1,5 @@
+Ext.namespace('Ext.ux.form');
+
 (function () {
 
     var F = Ext.ux.form;

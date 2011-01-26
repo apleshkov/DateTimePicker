@@ -1,3 +1,5 @@
+Ext.namespace('Ext.ux');
+
 (function () {
 
     var UX = Ext.ux;

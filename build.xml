@@ -20,7 +20,7 @@
     <target name="build">
 
         <concat destfile="date-time-field-debug.js">
-            <fileset dir="src" includes="begin.js"/>
+            <fileset dir="src" includes="header.js"/>
             <fileset dir="src" includes="BaseTimePicker.js"/>
             <fileset dir="src" includes="DateTimePicker.js"/>
             <fileset dir="src" includes="DateTimeField.js"/>
@@ -30,7 +30,14 @@
             <fileset dir="src" includes="*.css"/>
         </concat>
 
-        <yuicompress infile="date-time-field-debug.js" outfile="date-time-field.js"/>
+        <yuicompress infile="date-time-field-debug.js" outfile="date-time-field-min.js"/>
+
+        <concat destfile="date-time-field.js">
+            <fileset dir="src" includes="header.js"/>
+            <fileset dir="." includes="date-time-field-min.js"/>
+        </concat>
+
+        <delete file="date-time-field-min.js" quiet="true" />
 
     </target>
 

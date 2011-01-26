@@ -14,9 +14,9 @@ Ext.namespace('Ext.ux');
 
         doneText: 'Done',
 
-        hourIncremenet: 1,
+        hourIncrement: 1,
 
-        minIncremenet: 1,
+        minIncrement: 1,
 
         hoursLabel: 'Hours',
 
@@ -34,7 +34,7 @@ Ext.namespace('Ext.ux');
             this.addEvents('select');
 
             this.hourSlider = new Ext.slider.SingleSlider({
-                increment: this.hourIncremenet,
+                increment: this.hourIncrement,
                 minValue: 0,
                 maxValue: 23,
                 fieldLabel: this.hoursLabel,
@@ -46,7 +46,7 @@ Ext.namespace('Ext.ux');
             });
 
             this.minSlider = new Ext.slider.SingleSlider({
-                increment: this.minIncremenet,
+                increment: this.minIncrement,
                 minValue: 0,
                 maxValue: 59,
                 fieldLabel: this.minsLabel,

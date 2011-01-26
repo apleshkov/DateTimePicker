@@ -43,7 +43,7 @@ Ext.namespace('Ext.ux');
 
                 if (menuConfig && menuConfig.xtype) {
                     this.timeMenu = Ext.create(menuConfig);
-                } else {
+                } else {                          
                     var picker = Ext.create(
                             Ext.applyIf(this.initialConfig.timePicker || {}, {
                                 timeFormat: this.timeFormat

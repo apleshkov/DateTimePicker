@@ -13,7 +13,7 @@
 
     <link type="text/css" rel="stylesheet" href="ux-date-time-field.css"/>
 
-    <script type="text/javascript" src="date-time-field.js"></script>
+    <script type="text/javascript" src="date-time-field-debug.js"></script>
 
     <script type="text/javascript">
         /*<![CDATA[*/
@@ -23,7 +23,13 @@
             var dateField = new Ext.ux.form.DateTimeField({
                 dateFormat: 'j M Y',
                 //timeFormat: 'H:i',
-                fieldLabel: 'Date & time'
+                fieldLabel: 'Date & time',
+                picker: {
+                    timePicker: {
+                        hourIncrement: 2,
+                        minIncrement: 35
+                    }
+                }
             });
 
             var form = new Ext.form.FormPanel({
@@ -32,10 +38,6 @@
                     padding: '10px'
                 },
                 items: [dateField]
-            });
-
-            var picker = new Ext.ux.DateTimePicker({
-                timeFormat: 'H:i'
             });
 
             new Ext.Panel({
@@ -59,7 +61,11 @@
                         xtype: 'datetimepicker',
                         x: 600,
                         y: 10,
-                        timeFormat: 'H:i'
+                        timeFormat: 'H:i',
+                        timePicker: {
+                            hourIncrement: 4,
+                            minIncrement: 45
+                        }
                     }
                 ],
                 buttons: [

@@ -22,7 +22,6 @@
 
             var dateField = new Ext.ux.form.DateTimeField({
                 dateFormat: 'j M Y',
-                //timeFormat: 'H:i',
                 fieldLabel: 'Date & time',
                 picker: {
                     timePicker: {
@@ -37,7 +36,18 @@
                 bodyStyle: {
                     padding: '10px'
                 },
-                items: [dateField]
+                items: [dateField],
+                buttons: [
+                    new Ext.Button({
+                        text: 'Show DateMenu',
+                        menu: {
+                            xtype: 'datetimemenu',
+                            picker: {
+                                timeFormat: 'H:i:s'
+                            }
+                        }
+                    })
+                ]
             });
 
             new Ext.Panel({

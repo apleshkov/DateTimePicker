@@ -10,6 +10,7 @@
             <fileset dir="${src}" includes="license.js"/>
             <fileset dir="${src}" includes="BaseTimePicker.js"/>
             <fileset dir="${src}" includes="DateTimePicker.js"/>
+            <fileset dir="${src}" includes="DateTimeMenu.js"/>
             <fileset dir="${src}" includes="DateTimeField.js"/>
         </concat>
 

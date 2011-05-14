@@ -17,8 +17,8 @@ Supported browsers: Firefox 3.6, Chrome 8, Opera 11, IE 7, IE 8
 INSTALLATION
 ------------
 
-1. Install git
-2. Clone this repository into a new directory
+1. Open the [`build`](https://github.com/apleshkov/DateTimePicker/tree/master/build) directory
+2. Download files from that directory
 3. Include `date-time-field.js` and `ux-date-time-field.css` in your project
 
 USAGE

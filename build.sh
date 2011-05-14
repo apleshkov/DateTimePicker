@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
-tools/apache-ant-1.8.2/bin/ant $@
+java -jar tools/JSBuilder2/JSBuilder2.jar --projectFile ./date-time-ux.jsb2 --homeDir .

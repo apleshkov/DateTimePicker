@@ -1,14 +1,5 @@
-Ext.ux.DateTimePicker & Ext.ux.form.DateTimeField
-=================================================
-
-**Ext.ux.DateTimePicker**
-
-This component is like `Ext.DatePicker`, but gives you an ability to set date & time values.
-It can be used as an item of any `Ext.Container` (e.g. `Ext.Panel`).
-
-**Ext.ux.form.DateTimeField**
-
-This component is like `Ext.DateField`, but uses `Ext.ux.DateTimePicker`.
+User extensions for date & time picking
+=======================================
 
 Supported ExtJS versions: 3.3.1
 
@@ -19,7 +10,7 @@ INSTALLATION
 
 1. Open the [`build`](https://github.com/apleshkov/DateTimePicker/tree/master/build) directory
 2. Download files from that directory
-3. Include `date-time-field.js` and `ux-date-time-field.css` in your project
+3. Include `date-time-ux.js` and `date-time-ux.css` in your project
 
 USAGE
 -----
@@ -41,7 +32,7 @@ xtype: `datetimepicker`
         }
     });
 
-**How to use my own picker?**
+**How to use my own time picker?**
 
     var myPicker = Ext.extend(..., {
 

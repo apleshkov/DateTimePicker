@@ -1,0 +1,47 @@
+{
+    "projectName": "DateTime UX",
+    "deployDir": "build",
+    "licenseText": "Copyright (c) 2011 Andrew Pleshkov andrew.pleshkov@gmail.com\n\nLicensed under the MIT license: http://www.opensource.org/licenses/mit-license.php",
+    "pkgs": [
+        {
+            "isDebug": true,
+            "file": "date-time-ux.js",
+            "fileIncludes": [
+                {
+                    "text": "BaseTimePicker.js",
+                    "path": "src/"
+                },
+                {
+                    "text": "ExBaseTimePicker.js",
+                    "path": "src/"
+                },
+                {
+                    "text": "DateTimePicker.js",
+                    "path": "src/"
+                },
+                {
+                    "text": "DateTimeMenu.js",
+                    "path": "src/"
+                },
+                {
+                    "text": "DateTimeField.js",
+                    "path": "src/"
+                }
+            ]
+        },
+        {
+            "file": "date-time-ux.css",
+            "fileIncludes": [
+                {
+                    "text": "ux-date-time-picker.css",
+                    "path": "resources/"
+                },
+                {
+                    "text": "ux-base-time-picker.css",
+                    "path": "resources/"
+                }
+            ]
+        }
+    ],
+    "resources": []
+}

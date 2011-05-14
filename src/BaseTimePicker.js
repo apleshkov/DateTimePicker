@@ -6,7 +6,7 @@ Ext.namespace('Ext.ux');
 
     UX.BaseTimePicker = Ext.extend(Ext.Panel, {
 
-        timeFormat: 'g:i A',
+        format: 'g:i A',
 
         header: true,
 
@@ -59,10 +59,7 @@ Ext.namespace('Ext.ux');
 
             this.setCurrentTime(false);
 
-            this.items = [
-                    this.hourSlider,
-                    this.minSlider
-            ];
+            this._initItems();
 
             this.bbar = [
                 {
@@ -79,6 +76,13 @@ Ext.namespace('Ext.ux');
             ];
 
             UX.BaseTimePicker.superclass.initComponent.call(this);
+        },
+
+        _initItems: function () {
+            this.items = [
+                this.hourSlider,
+                this.minSlider
+            ];
         },
 
         setCurrentTime: function (animate) {
@@ -108,7 +112,7 @@ Ext.namespace('Ext.ux');
         },
 
         _updateTimeValue: function () {
-            var v = this._extractValue().format(this.timeFormat);
+            var v = this._extractValue().format(this.format);
 
             if (this.rendered) {
                 this.setTitle(v);

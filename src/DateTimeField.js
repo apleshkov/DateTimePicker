@@ -9,7 +9,7 @@ Ext.namespace('Ext.ux.form');
 
         timeFormat: 'g:i A',
 
-        defaultAutoCreate : {
+        defaultAutoCreate: {
             tag: 'input',
             type: 'text',
             size: '22',
@@ -20,13 +20,15 @@ Ext.namespace('Ext.ux.form');
             F.DateTimeField.superclass.initComponent.call(this);
 
             this.dateFormat = this.dateFormat || this.format;
+            this.format = this.dateFormat + ' ' + this.timeFormat;
 
-            var pickerConfig = {
+            var pickerConfig = Ext.apply(this.picker || {}, {
                 dateFormat: this.dateFormat,
                 timeFormat: this.timeFormat
-            };
+            });
 
-            this.format = this.dateFormat + ' ' + this.timeFormat;
+            delete this.picker;
+            delete this.initialConfig.picker;
 
             this.menu = new UX.menu.DateTimeMenu({
                 picker: pickerConfig,
@@ -35,7 +37,7 @@ Ext.namespace('Ext.ux.form');
         },
 
         onTriggerClick: function () {
-            F.DateTimeField.superclass.onTriggerClick.apply(this, arguments);
+            F.DateTimeField.superclass.onTriggerClick.call(this);
 
             this.menu.picker.setValue(this.getValue() || new Date());
         }

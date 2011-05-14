@@ -10,8 +10,6 @@ Ext.namespace('Ext.ux');
 
         timeLabel: 'Time',
 
-        timeFormat: 'g:i A',
-
         changeTimeText: 'Change...',
 
         doneText: 'Done',
@@ -28,6 +26,7 @@ Ext.namespace('Ext.ux');
             });
 
             this._initDatePicker();
+            this._initTimePicker();
 
             this.timeValue = new Date();
 
@@ -43,13 +42,12 @@ Ext.namespace('Ext.ux');
 
                 if (menuConfig && menuConfig.xtype) {
                     this.timeMenu = Ext.create(menuConfig);
-                } else {                          
-                    var picker = Ext.create(
-                            Ext.applyIf(this.initialConfig.timePicker || {}, {
-                                timeFormat: this.timeFormat
-                            }),
-                            'basetimepicker'
-                            );
+                } else {
+                    var pickerConfig = this.initialConfig.timePicker || {};
+                    if (this.timeFormat) {
+                        pickerConfig.format = this.timeFormat;
+                    }
+                    var picker = Ext.create(pickerConfig, 'basetimepicker');
                     this.timeMenu = new Menu(picker, menuConfig || {});
                 }
 
@@ -141,7 +139,7 @@ Ext.namespace('Ext.ux');
         },
 
         _getFormattedTimeValue: function (date) {
-            return date.format(this.timeFormat);
+            return date.format(this.timeMenu.picker.format);
         },
 
         _renderValueField: function (ct) {
@@ -237,7 +235,6 @@ Ext.namespace('Ext.ux');
         },
 
         _showTimePicker: function () {
-            this._initTimePicker();
             this.timeMenu.getPicker().setValue(this.timeValue, false);
 
             if (this.timeMenu.isVisible()) {

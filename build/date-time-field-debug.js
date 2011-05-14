@@ -29,7 +29,7 @@ Ext.namespace('Ext.ux');
 
     UX.BaseTimePicker = Ext.extend(Ext.Panel, {
 
-        timeFormat: 'g:i A',
+        format: 'g:i A',
 
         header: true,
 
@@ -82,10 +82,7 @@ Ext.namespace('Ext.ux');
 
             this.setCurrentTime(false);
 
-            this.items = [
-                    this.hourSlider,
-                    this.minSlider
-            ];
+            this._initItems();
 
             this.bbar = [
                 {
@@ -102,6 +99,13 @@ Ext.namespace('Ext.ux');
             ];
 
             UX.BaseTimePicker.superclass.initComponent.call(this);
+        },
+
+        _initItems: function () {
+            this.items = [
+                this.hourSlider,
+                this.minSlider
+            ];
         },
 
         setCurrentTime: function (animate) {
@@ -131,7 +135,7 @@ Ext.namespace('Ext.ux');
         },
 
         _updateTimeValue: function () {
-            var v = this._extractValue().format(this.timeFormat);
+            var v = this._extractValue().format(this.format);
 
             if (this.rendered) {
                 this.setTitle(v);
@@ -164,13 +168,71 @@ Ext.namespace('Ext.ux');
 
     var UX = Ext.ux;
 
+    UX.ExBaseTimePicker = Ext.extend(Ext.ux.BaseTimePicker, {
+
+        format: 'g:i:s A',
+
+        secIncrement: 1,
+
+        secsLabel: 'Seconds',
+
+        initComponent: function () {
+            this.secSlider = new Ext.slider.SingleSlider({
+                increment: this.secIncrement,
+                minValue: 0,
+                maxValue: 59,
+                fieldLabel: this.secsLabel,
+                listeners: {
+                    change: this._updateTimeValue,
+                    scope: this
+                },
+                plugins: new Ext.slider.Tip()
+            });
+
+            UX.ExBaseTimePicker.superclass.initComponent.call(this);
+        },
+
+        _initItems: function () {
+            UX.ExBaseTimePicker.superclass._initItems.call(this);
+
+            this.items.push(this.secSlider);
+        },
+
+        setValue: function (value, animate) {
+            this.secSlider.setValue(value.getSeconds(), animate);
+
+            UX.ExBaseTimePicker.superclass.setValue.call(this, value, animate);
+        },
+
+        _extractValue: function () {
+            var v = UX.ExBaseTimePicker.superclass._extractValue.call(this);
+
+            v.setSeconds(this.secSlider.getValue());
+            return v;
+        },
+
+        destroy: function () {
+            this.secSlider = null;
+
+            UX.ExBaseTimePicker.superclass.destroy.call(this);
+        }
+
+    });
+
+    Ext.reg('exbasetimepicker', UX.ExBaseTimePicker);
+
+})();
+Ext.namespace('Ext.ux');
+
+(function () {
+
+    var UX = Ext.ux;
+
     var CLS = 'ux-date-time-picker';
 
     UX.DateTimePicker = Ext.extend(Ext.BoxComponent, {
 
         timeLabel: 'Time',
-
-        timeFormat: 'g:i A',
 
         changeTimeText: 'Change...',
 
@@ -188,6 +250,7 @@ Ext.namespace('Ext.ux');
             });
 
             this._initDatePicker();
+            this._initTimePicker();
 
             this.timeValue = new Date();
 
@@ -203,13 +266,12 @@ Ext.namespace('Ext.ux');
 
                 if (menuConfig && menuConfig.xtype) {
                     this.timeMenu = Ext.create(menuConfig);
-                } else {                          
-                    var picker = Ext.create(
-                            Ext.applyIf(this.initialConfig.timePicker || {}, {
-                                timeFormat: this.timeFormat
-                            }),
-                            'basetimepicker'
-                            );
+                } else {
+                    var pickerConfig = this.initialConfig.timePicker || {};
+                    if (this.timeFormat) {
+                        pickerConfig.format = this.timeFormat;
+                    }
+                    var picker = Ext.create(pickerConfig, 'basetimepicker');
                     this.timeMenu = new Menu(picker, menuConfig || {});
                 }
 
@@ -301,7 +363,7 @@ Ext.namespace('Ext.ux');
         },
 
         _getFormattedTimeValue: function (date) {
-            return date.format(this.timeFormat);
+            return date.format(this.timeMenu.picker.format);
         },
 
         _renderValueField: function (ct) {
@@ -397,7 +459,6 @@ Ext.namespace('Ext.ux');
         },
 
         _showTimePicker: function () {
-            this._initTimePicker();
             this.timeMenu.getPicker().setValue(this.timeValue, false);
 
             if (this.timeMenu.isVisible()) {
@@ -602,7 +663,7 @@ Ext.namespace('Ext.ux.form');
 
         timeFormat: 'g:i A',
 
-        defaultAutoCreate : {
+        defaultAutoCreate: {
             tag: 'input',
             type: 'text',
             size: '22',
@@ -613,13 +674,15 @@ Ext.namespace('Ext.ux.form');
             F.DateTimeField.superclass.initComponent.call(this);
 
             this.dateFormat = this.dateFormat || this.format;
+            this.format = this.dateFormat + ' ' + this.timeFormat;
 
-            var pickerConfig = {
+            var pickerConfig = Ext.apply(this.picker || {}, {
                 dateFormat: this.dateFormat,
                 timeFormat: this.timeFormat
-            };
+            });
 
-            this.format = this.dateFormat + ' ' + this.timeFormat;
+            delete this.picker;
+            delete this.initialConfig.picker;
 
             this.menu = new UX.menu.DateTimeMenu({
                 picker: pickerConfig,
@@ -628,7 +691,7 @@ Ext.namespace('Ext.ux.form');
         },
 
         onTriggerClick: function () {
-            F.DateTimeField.superclass.onTriggerClick.apply(this, arguments);
+            F.DateTimeField.superclass.onTriggerClick.call(this);
 
             this.menu.picker.setValue(this.getValue() || new Date());
         }

@@ -22,12 +22,13 @@
 
             var dateField = new Ext.ux.form.DateTimeField({
                 dateFormat: 'j M Y',
+                timeFormat: Ext.ux.ExBaseTimePicker.prototype.format,
                 fieldLabel: 'Date & time',
                 picker: {
-                    timePicker: {
-                        hourIncrement: 2,
+                    timePicker: new Ext.ux.ExBaseTimePicker({
+                        hourIncrement: 1,
                         minIncrement: 35
-                    }
+                    })
                 }
             });
 
@@ -43,6 +44,9 @@
                         menu: {
                             xtype: 'datetimemenu',
                             picker: {
+                                timePicker: {
+                                    xtype: 'exbasetimepicker'
+                                },
                                 timeFormat: 'H:i:s'
                             }
                         }
@@ -73,7 +77,7 @@
                         y: 10,
                         timeFormat: 'H:i',
                         timePicker: {
-                            hourIncrement: 4,
+                            hourIncrement: 1,
                             minIncrement: 45
                         }
                     }

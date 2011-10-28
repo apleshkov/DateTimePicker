@@ -6,9 +6,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
     <!-- ExtJS -->
-    <link type="text/css" rel="stylesheet" href="ext-3.3.1/resources/css/ext-all.css"/>
-    <script type="text/javascript" src="ext-3.3.1/adapter/ext/ext-base-debug.js"></script>
-    <script type="text/javascript" src="ext-3.3.1/ext-all-debug.js"></script>
+    <link type="text/css" rel="stylesheet" href="../ext-4.0.0/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../ext-4.0.0/bootstrap.js"></script>
     <!-- /ExtJS -->
 
     <link type="text/css" rel="stylesheet" href="build/date-time-ux.css"/>
@@ -20,48 +19,47 @@
 
         Ext.onReady(function () {
 
-            var dateField = new Ext.ux.form.DateTimeField({
-                dateFormat: 'j M Y',
-                timeFormat: Ext.ux.ExBaseTimePicker.prototype.format,
-                fieldLabel: 'Date & time',
-                picker: {
-                    timePicker: new Ext.ux.ExBaseTimePicker({
-                        hourIncrement: 1,
-                        minIncrement: 35
-                    })
-                }
+            var MyDateTimePicker = new Ext.Class({
+
+                extend: 'Ext.ux.picker.DateTime',
+
+                doneText: 'My done'
+
             });
 
-            var form = new Ext.form.FormPanel({
+            var form = new Ext.form.Panel({
+                id: 'test-form',
                 title: 'My form',
-                bodyStyle: {
-                    padding: '10px'
-                },
-                items: [dateField],
-                buttons: [
-                    new Ext.Button({
-                        text: 'Show DateMenu',
-                        menu: {
-                            xtype: 'datetimemenu',
-                            picker: {
-                                timePicker: {
-                                    xtype: 'exbasetimepicker'
-                                },
-                                timeFormat: 'H:i:s'
+                bodyPadding: 10,
+                items: [
+                    {
+                        xtype: 'datetimefield',
+                        dateFormat: 'd.m.Y',
+                        timeFormat: 'H:i:s',
+                        pickerConfig: {
+                            timePicker: {
+                                showSeconds: true
                             }
                         }
-                    })
+                    }
+                ],
+                buttons: [
+                    {
+                        text: 'Show MyDateTimePicker',
+                        menu: {
+                            xtype: 'datetimemenu'
+                        }
+                    }
                 ]
             });
 
-            new Ext.Panel({
+            new Ext.panel.Panel({
+                id: 'test-panel',
                 title: 'Test',
                 renderTo: Ext.getBody(),
                 width: 800,
                 height: 400,
-                bodyStyle: {
-                    padding: '10px'
-                },
+                bodyPadding: 10,
                 layout: 'absolute',
                 items: [
                     {
@@ -71,29 +69,30 @@
                         items: form,
                         width: 500
                     },
-                    {
-                        xtype: 'datetimepicker',
+                    new MyDateTimePicker({
                         x: 600,
                         y: 10,
                         timeFormat: 'H:i',
                         timePicker: {
-                            hourIncrement: 1,
-                            minIncrement: 45
+                            hoursIncrement: 2,
+                            minsIncrement: 10
                         }
-                    }
+                    })
                 ],
                 buttons: [
                     {
                         text: 'Set current time',
-                        handler: function (df) {
-                            df.setValue(new Date());
-                        }.createDelegate(this, [dateField], 0)
+                        handler: function (thisButton) {
+                            var panel = thisButton.up('#test-panel');
+                            Ext.ComponentQuery.query('#test-form > datetimefield', panel)[0].setValue(new Date());
+                        }
                     },
                     {
                         text: 'Destroy form',
-                        handler: function (f) {
-                            Ext.destroy(f);
-                        }.createDelegate(this, [form], 0)
+                        handler: function (thisButton) {
+                            var panel = thisButton.up('#test-panel');
+                            Ext.destroy(Ext.ComponentQuery.query('#test-form', panel)[0]);
+                        }
                     }
                 ]
             });

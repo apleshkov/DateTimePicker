@@ -8,24 +8,20 @@
             "file": "date-time-ux.js",
             "fileIncludes": [
                 {
-                    "text": "BaseTimePicker.js",
-                    "path": "src/"
+                    "text": "Time.js",
+                    "path": "src/picker/"
                 },
                 {
-                    "text": "ExBaseTimePicker.js",
-                    "path": "src/"
+                    "text": "DateTime.js",
+                    "path": "src/picker/"
                 },
                 {
                     "text": "DateTimePicker.js",
-                    "path": "src/"
+                    "path": "src/menu/"
                 },
                 {
-                    "text": "DateTimeMenu.js",
-                    "path": "src/"
-                },
-                {
-                    "text": "DateTimeField.js",
-                    "path": "src/"
+                    "text": "DateTime.js",
+                    "path": "src/form/field/"
                 }
             ]
         },
@@ -33,12 +29,8 @@
             "file": "date-time-ux.css",
             "fileIncludes": [
                 {
-                    "text": "ux-date-time-picker.css",
-                    "path": "resources/"
-                },
-                {
-                    "text": "ux-base-time-picker.css",
-                    "path": "resources/"
+                    "text": "all.css",
+                    "path": "resources/css/"
                 }
             ]
         }

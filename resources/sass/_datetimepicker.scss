@@ -1,0 +1,43 @@
+@mixin date-time-picker($cmp-name, $padding: 4px) {
+
+    .#{$cmp-name} {
+        .#{$prefix}datepicker-footer {
+            padding: $padding;
+            .#{$prefix}btn {
+                margin: 0;
+            }
+        }
+    }
+
+    .#{$cmp-name}-timecontainer {
+        border: none;
+    }
+
+    table.#{$cmp-name}-timecontainer-inner {
+        width: 100%;
+    }
+
+    td.#{$cmp-name}-time {
+        text-align: left;
+        white-space: nowrap;
+        width: 100%;
+        padding-right: $padding;
+    }
+
+    span.#{$cmp-name}-timelabel {
+        font-weight: normal;
+    }
+
+    span.#{$cmp-name}-timevalue {
+        font-weight: bold;
+    }
+
+    .#{$cmp-name}-todaybtn-wrap {
+        float: left;
+    }
+
+    .#{$cmp-name}-donebtn-wrap {
+        float: right;
+    }
+
+}
